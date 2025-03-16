@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora Financiera</title>
+    <link th:href="@{/css/bootstrap/bootstrap.css}" rel="stylesheet">
+    <script>
+        function mostrarCampos() {
+            var tipo = document.getElementById("tipoCalculo").value;
+            document.getElementById("ventas").style.display = (tipo === "comision") ? "block" : "none";
+            document.getElementById("antiguedad").style.display = (tipo === "descuento") ? "block" : "none";
+            document.getElementById("diasPago").style.display = (tipo === "bonificacion") ? "block" : "none";
+            document.getElementById("producto").style.display = (tipo === "impuesto") ? "block" : "none";
+        }
+    </script>
+</head>
+<body>
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h3>Calculadora Financiera</h3>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/calcular}" method="get">
+                <div class="mb-3">
+                    <label for="tipoCalculo" class="form-label">Selecciona el cálculo:</label>
+                    <select id="tipoCalculo" name="tipo" class="form-select" onchange="mostrarCampos()">
+                        <option value="comision">Comisión Vendedor</option>
+                        <option value="descuento">Descuento Cliente</option>
+                        <option value="bonificacion">Bonificación Pago</option>
+                        <option value="impuesto">Impuesto Producto</option>
+                    </select>
+                </div>
+
+                <div id="ventas" style="display: none;">
+                    <label for="ventasMensuales" class="form-label">Ventas Mensuales ($):</label>
+                    <input type="number" name="ventas" id="ventasMensuales" class="form-control">
+                </div>
+
+                <div id="antiguedad" style="display: none;">
+                    <label for="añosCliente" class="form-label">Años como Cliente:</label>
+                    <input type="number" name="antiguedad" id="añosCliente" class="form-control">
+                </div>
+
+                <div id="diasPago" style="display: none;">
+                    <label for="diasCredito" class="form-label">Días en pagar:</label>
+                    <input type="number" name="dias" id="diasCredito" class="form-control">
+                </div>
+
+                <div id="producto" style="display: none;">
+                    <label for="categoria" class="form-label">Categoría del Producto:</label>
+                    <select id="categoria" name="categoria" class="form-select">
+                        <option value="electronica">Electrónica</option>
+                        <option value="alimentos">Alimentos</option>
+                        <option value="ropa">Ropa</option>
+                        <option value="muebles">Muebles</option>
+                    </select>
+                    <label for="precioBase" class="form-label mt-2">Precio Base ($):</label>
+                    <input type="number" name="precio" id="precioBase" class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3">Calcular</button>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${resultado != null}" class="mt-4">
+        <div class="alert alert-info">
+            <h4>Resultado:</h4>
+            <p th:text="${resultado}"></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
